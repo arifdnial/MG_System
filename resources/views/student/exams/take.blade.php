@@ -8,7 +8,7 @@
         <p class="text-gray-500 text-sm">{{ $exam->subject->title }} • {{ $exam->questions->count() }} questions • {{ $exam->questions->sum('points') }} total points</p>
     </div>
 
-    <form method="POST" action="{{ route('student.exams.submit', $exam) }}" class="space-y-4">
+    <form method="POST" action="{{ route('student.exams.save', $exam) }}" class="space-y-4" id="examForm">
         @csrf
         @foreach($exam->questions as $i => $question)
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
@@ -38,8 +38,8 @@
         @endforeach
 
         <div class="flex justify-end">
-            <button type="submit" onclick="return confirm('Are you sure you want to submit? You may not be able to change your answers.')" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold py-3 px-8 rounded-xl transition-all shadow-md hover:shadow-lg">
-                Submit Exam
+            <button type="submit" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-3 px-8 rounded-xl transition-all shadow-md hover:shadow-lg">
+                Save Answers
             </button>
         </div>
     </form>

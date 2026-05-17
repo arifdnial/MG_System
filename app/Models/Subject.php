@@ -29,6 +29,11 @@ class Subject extends Model
         return $this->hasMany(CourseMaterial::class);
     }
 
+    public function studyGroups()
+    {
+        return $this->hasMany(StudyGroup::class);
+    }
+
     // Get all students enrolled in any section of this subject
     public function students()
     {

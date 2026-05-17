@@ -81,12 +81,17 @@
                         </div>
                         @endif
                     </div>
-                    <form method="POST" action="{{ route('teacher.exams.deleteQuestion', [$exam, $question]) }}" onsubmit="return confirm('Delete this question?')">
-                        @csrf @method('DELETE')
-                        <button class="w-9 h-9 rounded-lg hover:bg-red-50 flex items-center justify-center text-slate-400 hover:text-red-500 transition-all">
-                            <i class='bx bx-trash text-lg'></i>
-                        </button>
-                    </form>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <a href="{{ route('teacher.exams.editQuestion', [$exam, $question]) }}" class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white flex items-center justify-center transition-all shadow-sm" title="Edit Question">
+                            <i class='bx bx-edit text-lg'></i>
+                        </a>
+                        <form method="POST" action="{{ route('teacher.exams.deleteQuestion', [$exam, $question]) }}" onsubmit="return confirm('Delete this question?')">
+                            @csrf @method('DELETE')
+                            <button class="w-9 h-9 rounded-xl bg-red-50 text-red-600 hover:bg-red-600 hover:text-white flex items-center justify-center transition-all shadow-sm" title="Delete Question">
+                                <i class='bx bx-trash text-lg'></i>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
             @empty

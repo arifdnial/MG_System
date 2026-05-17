@@ -102,14 +102,63 @@ class ExamController extends Controller
 
         if ($request->type === 'mcq' && $request->options) {
             foreach ($request->options as $i => $opt) {
-                $question->options()->create([
-                    'option_text' => $opt['text'],
-                    'is_correct' => $i == $request->correct_option,
-                ]);
+                if (!empty($opt['text'])) {
+                    $question->options()->create([
+                        'option_text' => $opt['text'],
+                        'is_correct' => $i == $request->correct_option,
+                    ]);
+                }
             }
         }
 
         return back()->with('success', 'Question added.');
+    }
+
+    public function editQuestion(Exam $exam, ExamQuestion $question)
+    {
+        $this->authorizeExam($exam);
+        $question->load('options');
+        return view('teacher.exams.edit_question', compact('exam', 'question'));
+    }
+
+    public function updateQuestion(Request $request, Exam $exam, ExamQuestion $question)
+    {
+        $this->authorizeExam($exam);
+
+        $request->validate([
+            'type' => 'required|in:mcq,subjective',
+            'question_text' => 'required|string',
+            'points' => 'required|integer|min:1',
+            'options' => 'required_if:type,mcq|array|min:2',
+            'options.*.text' => 'required_if:type,mcq|string',
+            'correct_option' => 'required_if:type,mcq|integer',
+        ]);
+
+        $question->update([
+            'type' => $request->type,
+            'question_text' => $request->question_text,
+            'points' => $request->points,
+        ]);
+
+        if ($request->type === 'mcq') {
+            // Delete old options and create new ones for simplicity
+            $question->options()->delete();
+            if ($request->options) {
+                foreach ($request->options as $i => $opt) {
+                    if (!empty($opt['text'])) {
+                        $question->options()->create([
+                            'option_text' => $opt['text'],
+                            'is_correct' => $i == $request->correct_option,
+                        ]);
+                    }
+                }
+            }
+        } else {
+            // If switched to subjective, remove any MCQ options
+            $question->options()->delete();
+        }
+
+        return redirect()->route('teacher.exams.show', $exam)->with('success', 'Question updated.');
     }
 
     public function deleteQuestion(Exam $exam, ExamQuestion $question)

@@ -102,7 +102,6 @@ class StudentController extends Controller
         $this->authorizeStudentExam($exam);
         $exam->load(['questions.options', 'subject']);
 
-        // Check if already taken
         $existingAnswers = ExamAnswer::where('student_id', auth()->id())
             ->whereIn('exam_question_id', $exam->questions->pluck('id'))
             ->get()->keyBy('exam_question_id');
@@ -110,36 +109,21 @@ class StudentController extends Controller
         return view('student.exams.take', compact('exam', 'existingAnswers'));
     }
 
-    public function examsSubmit(Request $request, Exam $exam)
+    public function examsSave(Request $request, Exam $exam)
     {
         $this->authorizeStudentExam($exam);
         $exam->load('questions.options');
 
-        $totalPoints = 0;
-        $earnedPoints = 0;
-
         foreach ($exam->questions as $question) {
-            $totalPoints += $question->points;
             $answerData = [
                 'exam_question_id' => $question->id,
                 'student_id' => auth()->id(),
-                'points_earned' => 0,
-                'is_correct' => null,
             ];
 
             if ($question->type === 'mcq') {
                 $selected = $request->input("answers.{$question->id}.option");
                 if ($selected) {
                     $answerData['selected_option_id'] = $selected;
-                    $option = $question->options->find($selected);
-                    if ($option && $option->is_correct) {
-                        $answerData['is_correct'] = true;
-                        $answerData['points_earned'] = $question->points;
-                        $earnedPoints += $question->points;
-                    }
-                    else {
-                        $answerData['is_correct'] = false;
-                    }
                 }
             }
             else {
@@ -147,12 +131,12 @@ class StudentController extends Controller
             }
 
             ExamAnswer::updateOrCreate(
-            ['exam_question_id' => $question->id, 'student_id' => auth()->id()],
+                ['exam_question_id' => $question->id, 'student_id' => auth()->id()],
                 $answerData
             );
         }
 
-        return redirect()->route('student.exams.result', $exam)->with('success', 'Exam submitted successfully!');
+        return back()->with('success', 'Answers saved successfully!');
     }
 
     public function examsResult(Exam $exam)

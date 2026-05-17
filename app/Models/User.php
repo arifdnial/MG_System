@@ -54,11 +54,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(CourseMaterial::class , 'teacher_id');
     }
+    public function teachingGroups()
+    {
+        return $this->hasMany(StudyGroup::class , 'teacher_id');
+    }
 
     // Student relationships
     public function sections()
     {
         return $this->belongsToMany(Section::class , 'section_student', 'student_id');
+    }
+    public function studyGroups()
+    {
+        return $this->belongsToMany(StudyGroup::class, 'study_group_student', 'student_id', 'study_group_id');
     }
     public function examAnswers()
     {

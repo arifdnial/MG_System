@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CourseMaterial extends Model
 {
-    protected $fillable = ['subject_id', 'teacher_id', 'title', 'description', 'video_url', 'file_path'];
+    protected $fillable = ['subject_id', 'teacher_id', 'title', 'description', 'video_url', 'file_path', 'document_path', 'is_group_activity'];
 
     public function subject()
     {
@@ -14,6 +14,11 @@ class CourseMaterial extends Model
     }
     public function teacher()
     {
-        return $this->belongsTo(User::class , 'teacher_id');
+        return $this->belongsTo(User::class, 'teacher_id');
+    }
+
+    public function submissions()
+    {
+        return $this->hasMany(MaterialSubmission::class);
     }
 }
