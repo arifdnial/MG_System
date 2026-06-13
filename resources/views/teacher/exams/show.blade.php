@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', $exam->title . ' - EduPro LMS')
+@section('title', $exam->title . ' - MGM-System')
 
 @section('content')
 <div class="space-y-6">

@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Scan Attendance QR - EduPro LMS')
+@section('title', 'Scan Attendance QR - MGM-System')
 
 @section('content')
     <div class="max-w-xl mx-auto space-y-6">

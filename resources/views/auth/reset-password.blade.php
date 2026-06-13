@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Reset Password - EduPro LMS')
+@section('title', 'Reset Password - MGM-System')
 
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 flex items-center justify-center px-4 py-12">

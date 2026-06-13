@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', ucfirst($role) . 's - Admin - EduPro LMS')
+@section('title', ucfirst($role) . 's - Admin - MGM-System')
 
 @section('content')
 <div class="space-y-6">

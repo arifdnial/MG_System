@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', $subject->title . ' - EduPro LMS')
+@section('title', $subject->title . ' - MGM-System')
 @section('content')
     <div class="space-y-6">
         <div class="flex items-start justify-between gap-4">

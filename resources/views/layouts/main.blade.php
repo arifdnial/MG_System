@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'EduPro LMS')</title>
-    <meta name="description" content="EduPro Learning Management System">
+    <title>@yield('title', 'MGM-System')</title>
+    <meta name="description" content="MGM-System">
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link
@@ -47,7 +47,7 @@
                             </svg>
                         </div>
                         <div>
-                            <h1 class="text-xl font-extrabold tracking-tight">EduPro<span class="text-indigo-500">.</span>
+                            <h1 class="text-xl font-extrabold tracking-tight">MGM-System
                             </h1>
                             <p class="text-[10px] text-slate-500 font-bold uppercase tracking-[0.2em]">{{ __('Workspace') }}
                                 ({{ __(ucfirst(auth()->user()->role)) }})</p>
@@ -244,8 +244,7 @@
                                 d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
-                    <span class="font-extrabold text-xl tracking-tight text-slate-900">EduPro<span
-                            class="text-indigo-600">.</span></span>
+                    <span class="font-extrabold text-xl tracking-tight text-slate-900">MGM-System</span>
                     <div class="w-10"></div>
                 </header>
 

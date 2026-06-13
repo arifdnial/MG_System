@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', $exam->title . ' - Take Exam - EduPro LMS')
+@section('title', $exam->title . ' - Take Exam - MGM-System')
 @section('content')
 <div class="max-w-3xl mx-auto space-y-6">
     <div>

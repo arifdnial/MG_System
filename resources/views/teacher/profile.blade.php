@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'My Profile - EduPro LMS')
+@section('title', 'My Profile - MGM-System')
 
 @section('content')
 <div class="max-w-3xl mx-auto space-y-6">

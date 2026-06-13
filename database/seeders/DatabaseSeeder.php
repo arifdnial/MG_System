@@ -178,7 +178,7 @@ class DatabaseSeeder extends Seeder
 
         $this->command->info('');
         $this->command->info('═════════════════════════════════════════════');
-        $this->command->info('  EduPro LMS Database Seeded Successfully!  ');
+        $this->command->info('  MGM-System Database Seeded Successfully!  ');
         $this->command->info('═════════════════════════════════════════════');
         $this->command->info('');
         $this->command->info('  Login Credentials (password: "password"):');

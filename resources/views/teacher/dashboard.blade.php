@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Teacher Dashboard - EduPro LMS')
+@section('title', 'Teacher Dashboard - MGM-System')
 
 @section('content')
     <div class="space-y-8">

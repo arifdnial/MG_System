@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Register - EduPro LMS')
+@section('title', 'Register - MGM-System')
 
 @section('content')
 <div class="min-h-screen flex">
@@ -15,7 +15,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 016 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
                 </svg>
             </div>
-            <h1 class="text-5xl font-bold mb-4 text-center">Join EduPro</h1>
+            <h1 class="text-5xl font-bold mb-4 text-center">Join MGM-System</h1>
             <p class="text-xl text-indigo-100 text-center max-w-md">Create your account and start your learning journey today</p>
         </div>
     </div>
