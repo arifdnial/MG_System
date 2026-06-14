@@ -68,21 +68,36 @@
                 <form method="POST" action="{{ route('login') }}" class="space-y-6">
                     @csrf
 
-                    {{-- Role Selection --}}
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-3">Login As</label>
-                        <div class="grid grid-cols-3 gap-3">
-                            @foreach(['admin' => ['icon' => 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z', 'color' => 'amber'], 'teacher' => ['icon' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z', 'color' => 'indigo'], 'student' => ['icon' => 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z', 'color' => 'emerald']] as $val => $data)
-                            <label class="relative cursor-pointer">
-                                <input type="radio" name="role" value="{{ $val }}" class="peer sr-only" {{ old('role', 'student') === $val ? 'checked' : '' }}>
-                                <div class="p-4 rounded-2xl border-2 border-gray-200 text-center transition-all peer-checked:border-{{ $data['color'] }}-500 peer-checked:bg-{{ $data['color'] }}-50 hover:border-{{ $data['color'] }}-300">
-                                    <svg class="w-6 h-6 mx-auto mb-2 text-{{ $data['color'] }}-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $data['icon'] }}"></path></svg>
-                                    <span class="text-sm font-semibold text-gray-700 capitalize">{{ $val }}</span>
-                                </div>
-                            </label>
-                            @endforeach
-                        </div>
-                    </div>
+                  {{-- Role Selection --}}
+<div>
+    <label class="block text-sm font-semibold text-gray-700 mb-3">Login As</label>
+    <div class="grid grid-cols-3 gap-3">
+                      {{-- Admin --}}
+                      <label class="relative cursor-pointer">
+                          <input type="radio" name="role" value="admin" class="peer sr-only" {{ old('role') === 'admin' ? 'checked' : '' }}>
+                          <div class="p-4 rounded-2xl border-2 border-gray-200 text-center transition-all peer-checked:border-amber-500 peer-checked:bg-amber-50 peer-checked:ring-2 peer-checked:ring-amber-500 peer-checked:scale-105 hover:border-amber-300">
+                              <svg class="w-6 h-6 mx-auto mb-2 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                              <span class="text-sm font-semibold text-gray-700 capitalize">admin</span>
+                          </div>
+                      </label>
+                      {{-- Teacher --}}
+                      <label class="relative cursor-pointer">
+                          <input type="radio" name="role" value="teacher" class="peer sr-only" {{ old('role') === 'teacher' ? 'checked' : '' }}>
+                          <div class="p-4 rounded-2xl border-2 border-gray-200 text-center transition-all peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:ring-2 peer-checked:ring-indigo-500 peer-checked:scale-105 hover:border-indigo-300">
+                              <svg class="w-6 h-6 mx-auto mb-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                              <span class="text-sm font-semibold text-gray-700 capitalize">teacher</span>
+                          </div>
+                      </label>
+                      {{-- Student (default checked) --}}
+                      <label class="relative cursor-pointer">
+                          <input type="radio" name="role" value="student" class="peer sr-only" {{ old('role', 'student') === 'student' ? 'checked' : '' }}>
+                          <div class="p-4 rounded-2xl border-2 border-gray-200 text-center transition-all peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:ring-2 peer-checked:ring-emerald-500 peer-checked:scale-105 hover:border-emerald-300">
+                              <svg class="w-6 h-6 mx-auto mb-2 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                              <span class="text-sm font-semibold text-gray-700 capitalize">student</span>
+                          </div>
+                      </label>
+    </div>
+</div>
 
                     {{-- IC --}}
                     <div>
@@ -124,15 +139,8 @@
                 </div>
             </div>
 
-            {{-- Demo Credentials --}}
-            <div class="mt-6 bg-indigo-50 rounded-2xl p-4 border border-indigo-100">
-                <p class="text-sm font-semibold text-indigo-800 mb-2">Demo Credentials (password: "password")</p>
-                <div class="text-xs text-indigo-600 space-y-1">
-                    <p><strong>Admin:</strong> IC 000000000001</p>
-                    <p><strong>Teacher:</strong> IC 880101012345</p>
-                    <p><strong>Student:</strong> IC 100101011234</p>
-                </div>
-            </div>
+            
+            
         </div>
     </div>
 </div>
