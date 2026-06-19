@@ -85,6 +85,7 @@ Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->name('teacher.')
     Route::put('/exams/{exam}/questions/{question}', [TeacherExamController::class, 'updateQuestion'])->name('exams.updateQuestion');
     Route::delete('/exams/{exam}/questions/{question}', [TeacherExamController::class, 'deleteQuestion'])->name('exams.deleteQuestion');
     Route::post('/exams/{exam}/toggle-marks', [TeacherExamController::class, 'toggleMarks'])->name('exams.toggleMarks');
+    Route::post('/exams/{exam}/grade', [TeacherExamController::class, 'gradeSubjective'])->name('exams.grade');
     Route::delete('/exams/{exam}', [TeacherExamController::class, 'destroy'])->name('exams.destroy');
 
     // Announcements

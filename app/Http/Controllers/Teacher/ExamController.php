@@ -77,7 +77,15 @@ class ExamController extends Controller
             ];
         }
 
-        return view('teacher.exams.show', compact('exam', 'submissions'));
+        // Subjective answers for manual grading
+        $subjectiveQuestionIds = $exam->questions->where('type', 'subjective')->pluck('id');
+        $subjectiveAnswers = $subjectiveQuestionIds->isNotEmpty()
+            ? ExamAnswer::whereIn('exam_question_id', $subjectiveQuestionIds)
+                ->with(['student', 'question'])
+                ->get()
+            : collect();
+
+        return view('teacher.exams.show', compact('exam', 'submissions', 'subjectiveAnswers'));
     }
 
     public function addQuestion(Request $request, Exam $exam)
@@ -139,7 +147,6 @@ class ExamController extends Controller
             'question_text' => $request->question_text,
             'points' => $request->points,
         ]);
-
         if ($request->type === 'mcq') {
             // Delete old options and create new ones for simplicity
             $question->options()->delete();
@@ -174,6 +181,33 @@ class ExamController extends Controller
         $exam->update(['marks_released' => !$exam->marks_released]);
         $status = $exam->marks_released ? 'released' : 'hidden';
         return back()->with('success', "Marks have been {$status}.");
+    }
+
+    public function gradeSubjective(Request $request, Exam $exam)
+    {
+        $this->authorizeExam($exam);
+
+        $request->validate([
+            'grades' => 'array',
+            'grades.*' => 'nullable|integer|min:0',
+        ]);
+
+        foreach ($request->input('grades', []) as $answerId => $points) {
+            $answer = ExamAnswer::find($answerId);
+            if (!$answer) continue;
+
+            $question = $answer->question;
+            if (!$question || $question->exam_id !== $exam->id || $question->type !== 'subjective') {
+                continue;
+            }
+
+            $points = max(0, min((int) $points, $question->points));
+            $answer->points_earned = $points;
+            $answer->is_correct = $points >= $question->points;
+            $answer->save();
+        }
+
+        return back()->with('success', 'Subjective answers graded successfully.');
     }
 
     public function destroy(Exam $exam)

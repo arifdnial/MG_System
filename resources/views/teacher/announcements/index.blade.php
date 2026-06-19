@@ -26,7 +26,7 @@
                             {{ $ann->subject->title }}
                         </span>
                     </div>
-                    <p class="text-slate-600 leading-relaxed">{{ $ann->content }}</p>
+                   <p class="text-slate-600 leading-relaxed whitespace-pre-line">{{ $ann->content }}</p>
                     @if($ann->video_link)
                     <a href="{{ $ann->video_link }}" target="_blank" class="inline-flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-700 font-medium mt-4 group/link">
                         <div class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center group-hover/link:bg-indigo-200 transition-colors">

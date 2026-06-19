@@ -110,35 +110,44 @@ class StudentController extends Controller
     }
 
     public function examsSave(Request $request, Exam $exam)
-    {
-        $this->authorizeStudentExam($exam);
-        $exam->load('questions.options');
+{
+    $this->authorizeStudentExam($exam);
+    $exam->load('questions.options');
 
-        foreach ($exam->questions as $question) {
-            $answerData = [
-                'exam_question_id' => $question->id,
-                'student_id' => auth()->id(),
-            ];
+    foreach ($exam->questions as $question) {
+        $answerData = [
+            'exam_question_id' => $question->id,
+            'student_id' => auth()->id(),
+        ];
 
-            if ($question->type === 'mcq') {
-                $selected = $request->input("answers.{$question->id}.option");
-                if ($selected) {
-                    $answerData['selected_option_id'] = $selected;
-                }
+        if ($question->type === 'mcq') {
+            $selected = $request->input("answers.{$question->id}.option");
+            if ($selected) {
+                $answerData['selected_option_id'] = $selected;
+
+                // Check correctness and award points
+                $correctOption = $question->options->firstWhere('is_correct', true);
+                $isCorrect = $correctOption && (int) $selected === $correctOption->id;
+
+                $answerData['is_correct'] = $isCorrect;
+                $answerData['points_earned'] = $isCorrect ? $question->points : 0;
             }
-            else {
-                $answerData['answer_text'] = $request->input("answers.{$question->id}.text", '');
-            }
-
-            ExamAnswer::updateOrCreate(
-                ['exam_question_id' => $question->id, 'student_id' => auth()->id()],
-                $answerData
-            );
+        }
+        else {
+            $answerData['answer_text'] = $request->input("answers.{$question->id}.text", '');
+            // Subjective questions need manual grading by teacher
+            $answerData['points_earned'] = 0;
+            $answerData['is_correct'] = null;
         }
 
-        return back()->with('success', 'Answers saved successfully!');
+        ExamAnswer::updateOrCreate(
+            ['exam_question_id' => $question->id, 'student_id' => auth()->id()],
+            $answerData
+        );
     }
 
+    return back()->with('success', 'Answers saved successfully!');
+}
     public function examsResult(Exam $exam)
     {
         $this->authorizeStudentExam($exam);

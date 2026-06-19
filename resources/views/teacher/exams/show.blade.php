@@ -79,6 +79,11 @@
                             </div>
                             @endforeach
                         </div>
+                        @else
+                        <div class="mt-3 p-3 rounded-lg bg-purple-50 text-purple-700 text-sm flex items-center gap-2">
+                            <i class='bx bx-edit-alt'></i>
+                            Subjective answer — students will type their response in a text box.
+                        </div>
                         @endif
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
@@ -118,6 +123,17 @@
         <div class="p-5">
             <form method="POST" action="{{ route('teacher.exams.addQuestion', $exam) }}" class="space-y-4" id="add-question-form">
                 @csrf
+
+                @if ($errors->any())
+                <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm mb-4">
+                    <ul class="list-disc list-inside space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-2">
                         <label class="block text-sm font-semibold text-slate-700">Question Type</label>
@@ -165,6 +181,43 @@
             </form>
         </div>
     </div>
+    @if($subjectiveAnswers->isNotEmpty())
+<div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+    <div class="p-5 border-b border-slate-100 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
+            <i class='bx bx-edit-alt text-purple-600 text-xl'></i>
+        </div>
+        <div>
+            <h2 class="font-bold text-slate-800 text-lg">Grade Subjective Answers</h2>
+            <p class="text-sm text-slate-500">Review student answers and assign points</p>
+        </div>
+    </div>
+    <form method="POST" action="{{ route('teacher.exams.grade', $exam) }}" class="p-5 space-y-4">
+        @csrf
+        @foreach($subjectiveAnswers as $ans)
+        <div class="border border-slate-200 rounded-xl p-4">
+            <div class="flex items-center justify-between mb-2 gap-3 flex-wrap">
+                <span class="font-semibold text-slate-800">{{ $ans->student->name }}</span>
+                <span class="text-sm text-slate-500">{{ $ans->question->question_text }}</span>
+            </div>
+            <div class="bg-slate-50 rounded-lg p-3 text-sm text-slate-700 mb-3 whitespace-pre-line">
+                {{ $ans->answer_text ?: 'No answer provided' }}
+            </div>
+            <div class="flex items-center gap-2">
+                <label class="text-sm font-medium text-slate-600">Points:</label>
+                <input type="number" name="grades[{{ $ans->id }}]" value="{{ $ans->points_earned }}" min="0" max="{{ $ans->question->points }}"
+                    class="w-20 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                <span class="text-sm text-slate-500">/ {{ $ans->question->points }}</span>
+            </div>
+        </div>
+        @endforeach
+        <button type="submit" class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold px-6 py-3 rounded-xl transition-all shadow-lg shadow-emerald-500/25">
+            <i class='bx bx-save'></i>
+            Save Grades
+        </button>
+    </form>
+</div>
+@endif
 
     @if(count($submissions) > 0)
     <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
@@ -222,8 +275,11 @@
 function toggleOptions() {
     const isMcq = document.getElementById('q_type').value === 'mcq';
     document.getElementById('options_section').style.display = isMcq ? 'block' : 'none';
-    document.querySelectorAll('#options_section input[type="text"]').forEach(el => {
-        el.required = isMcq;
+    document.querySelectorAll('#options_section input').forEach(el => {
+        if (el.type === 'text') {
+            el.required = isMcq;
+        }
+        el.disabled = !isMcq;
     });
 }
 </script>
